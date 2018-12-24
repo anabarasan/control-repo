@@ -34,7 +34,7 @@ node /puppet-agent-(.*)-2(.*)/ {
 
 node /puppet-master-(.*)/ {
   class { 'puppetdb':
-    listen_address => $::facts['networking']['ip']
+    listen_address => '0.0.0.0'
   }
   class { 'puppetdb::master::config': }
 }
