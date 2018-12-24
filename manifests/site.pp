@@ -24,11 +24,11 @@ File { backup => false }
 # definition. If there are no other nodes in this file, classes declared here
 # will be included in every node's catalog, *in addition* to any classes
 # specified in the console for that node.
-node 'puppet-agent-tw-1.novalocal' {
+node /puppet-agent-(.*)-1(.*)/ {
   notify {'Hello Agent 1': }
 }
 
-node 'puppet-agent-tw-2.novalocal' {
+node /puppet-agent-(.*)-2(.*)/ {
   notify {'Hello Agent 2': }
 }
 
