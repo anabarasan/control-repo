@@ -25,11 +25,16 @@ File { backup => false }
 # will be included in every node's catalog, *in addition* to any classes
 # specified in the console for that node.
 node /puppet-agent-(.*)-1(.*)/ {
-  notify {'Hello Agent 1': }
+  notify { 'Hello Agent 1': }
 }
 
 node /puppet-agent-(.*)-2(.*)/ {
-  notify {'Hello Agent 2': }
+  notify { 'Hello Agent 2': }
+}
+
+node /puppet-master-(.*)/ {
+  class { 'puppetdb': }
+  class { 'puppetdb::master::config': }
 }
 
 node default {
