@@ -62,7 +62,7 @@ class profile::puppetboard {
     manage_git          => true,
     manage_virtualenv   => true,
     manage_selinux      => false,
-    puppetdb_host       => 'puppet-master-tw.novalocal',
+    puppetdb_host       => $puppetboard_certname,
     puppetdb_port       => 8080,
     reports_count       => 40,
   }
