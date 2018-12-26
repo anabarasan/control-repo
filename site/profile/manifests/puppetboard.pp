@@ -8,6 +8,11 @@ class profile::puppetboard {
 
   $puppetboard_certname = $trusted['certname']
   $ssl_dir = '/etc/httpd/ssl'
+  $puppetboard_host = 'puppetboard.example.com'
+
+  host { $puppetboard_host:
+    ip => '127.0.0.1'
+  }
 
   file { $ssl_dir:
     ensure => 'directory',
@@ -58,13 +63,14 @@ class profile::puppetboard {
   }
 
   class { '::puppetboard':
-    groups              => 'root',
-    manage_git          => true,
-    manage_virtualenv   => true,
-    manage_selinux      => false,
-    puppetdb_host       => $puppetboard_certname,
-    puppetdb_port       => 8080,
-    reports_count       => 40,
+    groups            => 'root',
+    manage_git        => true,
+    manage_virtualenv => true,
+    manage_selinux    => false,
+    puppetdb_host     => $puppetboard_certname,
+    puppetdb_port     => 8080,
+    reports_count     => 40,
+    enable_catalog    => true,
   }
 
   class { '::apache::mod::wsgi':
@@ -72,7 +78,7 @@ class profile::puppetboard {
   }
 
   class { '::puppetboard::apache::vhost':
-    vhost_name => 'puppetboard.example.com',
+    vhost_name => $puppetboard_host,
     port       => 80,
   }
 }
