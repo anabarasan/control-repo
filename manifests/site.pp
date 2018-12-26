@@ -33,18 +33,11 @@ node /puppet-agent-(.*)-2(.*)/ {
 }
 
 node /puppet-master-(.*)/ {
-  class { 'puppetdb':
-    listen_address  => '0.0.0.0',
-    manage_firewall => false,
-  }
-  class { 'puppetdb::master::config':
-    manage_report_processor => true,
-    enable_reports          => true
-  }
+  include profile::puppetdb
+  include profile::puppetboard
+
+  Class['profile::puppetdb'] -> Class['profile::puppetboard']
 }
 
 node default {
-  # This is where you can declare classes for all nodes.
-  # Example:
-  #   class { 'my_class': }
 }
