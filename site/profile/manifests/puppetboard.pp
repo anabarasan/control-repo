@@ -7,70 +7,28 @@ class profile::puppetboard {
   include ::apache
 
   $puppetboard_certname = $trusted['certname']
-  $ssl_dir = '/etc/httpd/ssl'
+  $ssl_dir = "/etc/puppetlabs/puppet/ssl"
+  notice("$puppetboard_certname is certname")
+  notice("$ssl_dir ssl_dir")
   $puppetboard_host = 'puppetboard.example.com'
 
   host { $puppetboard_host:
     ip => '127.0.0.1'
   }
 
-  file { $ssl_dir:
-    ensure => 'directory',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
-  }
-
-  file { "${ssl_dir}/certs":
-    ensure => 'directory',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
-  }
-
-  file { "${ssl_dir}/private_keys":
-    ensure => 'directory',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0750',
-  }
-
-  file { "${ssl_dir}/certs/ca.pem":
-    ensure => 'file',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
-    source => "${::settings::ssldir}/certs/ca.pem",
-    before => Class['::puppetboard'],
-  }
-
-  file { "${ssl_dir}/certs/${puppetboard_certname}.pem":
-    ensure => 'file',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
-    source => "${::settings::ssldir}/certs/${puppetboard_certname}.pem",
-    before => Class['::puppetboard'],
-  }
-
-  file { "${ssl_dir}/private_keys/${puppetboard_certname}.pem":
-    ensure => 'file',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
-    source => "${::settings::ssldir}/private_keys/${puppetboard_certname}.pem",
-    before => Class['::puppetboard'],
-  }
-
   class { '::puppetboard':
-    groups            => 'root',
-    manage_git        => true,
-    manage_virtualenv => true,
-    manage_selinux    => false,
-    puppetdb_host     => $puppetboard_certname,
-    puppetdb_port     => 8080,
-    reports_count     => 40,
-    enable_catalog    => true,
+    groups              => 'root',
+    manage_git          => true,
+    manage_virtualenv   => true,
+    manage_selinux      => false,
+    puppetdb_host       => $puppetboard_certname,
+    puppetdb_port       => 8081,
+    reports_count       => 40,
+    enable_catalog      => true,
+    puppetdb_key        => "${ssl_dir}/private_keys/${puppetboard_certname}.pem",
+    puppetdb_ssl_verify => "${ssl_dir}/certs/ca.pem",
+    puppetdb_cert       => "${ssl_dir}/certs/${puppetboard_certname}.pem",
+    listen              => 'public',
   }
 
   class { '::apache::mod::wsgi':
