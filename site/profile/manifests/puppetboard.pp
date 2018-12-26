@@ -17,7 +17,8 @@ class profile::puppetboard {
   }
 
   class { '::puppetboard':
-    groups              => 'root',
+    user                => 'puppet',
+    groups              => 'puppet',
     manage_git          => true,
     manage_virtualenv   => true,
     manage_selinux      => false,
@@ -36,6 +37,8 @@ class profile::puppetboard {
   }
 
   class { '::puppetboard::apache::vhost':
+    user       => 'puppet',
+    group      => 'puppet',
     vhost_name => $puppetboard_host,
     port       => 80,
   }
