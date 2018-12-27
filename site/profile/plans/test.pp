@@ -1,4 +1,4 @@
-plan test (
+plan profile::test (
   TargetSpec $nodes,
   String $content = 'Hello World',
 ) {
