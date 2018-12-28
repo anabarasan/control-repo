@@ -24,12 +24,8 @@ File { backup => false }
 # definition. If there are no other nodes in this file, classes declared here
 # will be included in every node's catalog, *in addition* to any classes
 # specified in the console for that node.
-node /puppet-agent-(.*)-1(.*)/ {
-  include role::agent1
-}
-
-node /puppet-agent-(.*)-2(.*)/ {
-  include role::agent2
+node /puppet-agent-(.*)/ {
+  include role::agent
 }
 
 node /puppet-master-(.*)/ {

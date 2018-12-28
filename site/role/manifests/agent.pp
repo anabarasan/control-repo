@@ -1,3 +1,3 @@
-class role::agent1 {
+class role::agent {
   include profile::ssh_keys
 }
