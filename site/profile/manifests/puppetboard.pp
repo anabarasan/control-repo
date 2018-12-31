@@ -30,6 +30,7 @@ class profile::puppetboard {
     puppetdb_ssl_verify => "${ssl_dir}/certs/ca.pem",
     puppetdb_cert       => "${ssl_dir}/certs/${puppetboard_certname}.pem",
     listen              => 'public',
+    default_environment => '*',
   }
 
   class { '::apache::mod::wsgi':
