@@ -1,7 +1,7 @@
 # class profile::ssh_keys
 class profile::ssh_keys {
 
-  $public_key = file('/root/.ssh/id_rsa.pub')
+  $public_key = strip(file('/root/.ssh/id_rsa.pub'))
   $splits = split($public_key, ' ')
   @@ssh_authorized_key { $::hostname:
     ensure => present,
