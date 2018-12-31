@@ -1,3 +1,4 @@
+# Class: profile::agents
 class profile::agents {
 
   $agent_ips_query = @("EOF")
@@ -19,12 +20,12 @@ class profile::agents {
 
   $file_content = @("EOF")
 Number of Agents = ${agents_count}
-$agent_ips
+${agent_ips}
 | EOF
 
   file { '/tmp/agent_ips':
-    content => $file_content,
     ensure  => present,
+    content => $file_content,
   }
 
 }

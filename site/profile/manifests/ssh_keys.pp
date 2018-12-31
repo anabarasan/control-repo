@@ -1,30 +1,13 @@
-class profile::ssh_keys (
-  String $private_key,
-  String $public_key,
-) {
+# class profile::ssh_keys
+class profile::ssh_keys {
 
-  file { '/root/.ssh/id_rsa':
-    ensure  => present,
-    content => $private_key,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '600',
-  }
-
-  file { '/root/.ssh/id_rsa.pub':
-    ensure  => present,
-    content => $public_key,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '644',
-  }
-
-  $splits = split($public_key, " ")
-  @@ssh_authorized_key { $splits[2]:
+  $public_key = file('/root/.ssh/id_rsa.pub')
+  $splits = split($public_key, ' ')
+  @@ssh_authorized_key { $::hostname:
     ensure => present,
     type   => $splits[0],
     key    => $splits[1],
-    user   => "root",
+    user   => 'root',
     tag    => 'ssh-key'
   }
 

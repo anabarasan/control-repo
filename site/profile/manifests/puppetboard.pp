@@ -7,9 +7,7 @@ class profile::puppetboard {
   include ::apache
 
   $puppetboard_certname = $trusted['certname']
-  $ssl_dir = "/etc/puppetlabs/puppet/ssl"
-  notice("$puppetboard_certname is certname")
-  notice("$ssl_dir ssl_dir")
+  $ssl_dir = '/etc/puppetlabs/puppet/ssl'
   $puppetboard_host = 'puppetboard.example.com'
 
   host { $puppetboard_host:
